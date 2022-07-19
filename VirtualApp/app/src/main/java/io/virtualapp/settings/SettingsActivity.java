@@ -17,6 +17,7 @@ import com.android.launcher3.LauncherFiles;
 import com.lody.virtual.client.core.VirtualCore;
 import com.lody.virtual.client.env.Constants;
 import com.lody.virtual.client.ipc.VActivityManager;
+import com.lody.virtual.server.device.VDeviceManagerService;
 
 import java.io.File;
 import java.io.IOException;
@@ -168,6 +169,7 @@ public class SettingsActivity extends Activity {
                         .setMessage(getResources().getString(R.string.settings_reboot_content))
                         .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                             VirtualCore.get().killAllApps();
+                            VDeviceManagerService.get().resetDevices();
                             Toast.makeText(getActivity(), R.string.reboot_tips_1, Toast.LENGTH_SHORT).show();
                         })
                         .setNegativeButton(android.R.string.no, null)
