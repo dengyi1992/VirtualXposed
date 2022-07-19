@@ -32,6 +32,14 @@ public class VDeviceManagerService extends IDeviceInfoManager.Stub {
         return sInstance;
     }
 
+    public void resetDevices() {
+        for (int i = 0; i < mDeviceInfos.size(); i++) {
+            mDeviceInfos.put(i,generateDeviceInfo());
+            VDeviceInfo info = mDeviceInfos.valueAt(i);
+            addDeviceInfoToPool(info);
+        }
+    }
+
     private final class UsedDeviceInfoPool {
         List<String> deviceIds = new ArrayList<>();
         List<String> androidIds = new ArrayList<>();
@@ -42,6 +50,8 @@ public class VDeviceManagerService extends IDeviceInfoManager.Stub {
 
     public VDeviceManagerService() {
         mPersistenceLayer.read();
+        mDeviceInfos.clear();
+        mDeviceInfos.put(0,generateDeviceInfo());
         for (int i = 0; i < mDeviceInfos.size(); i++) {
             VDeviceInfo info = mDeviceInfos.valueAt(i);
             addDeviceInfoToPool(info);
@@ -114,7 +124,7 @@ public class VDeviceManagerService extends IDeviceInfoManager.Stub {
     @SuppressLint("HardwareIds")
     private VDeviceInfo generateDeviceInfo() {
         VDeviceInfo info = generateRandomDeviceInfo();
-        Context context = VirtualCore.get().getContext();
+        /*Context context = VirtualCore.get().getContext();
         if (context == null) {
             return info;
         }
@@ -137,7 +147,7 @@ public class VDeviceManagerService extends IDeviceInfoManager.Stub {
             info.serial = Build.SERIAL;
         } catch (Throwable e) {
             e.printStackTrace();
-        }
+        }*/
         return info;
     }
 
